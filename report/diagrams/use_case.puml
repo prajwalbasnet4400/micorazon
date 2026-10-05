@@ -1,0 +1,30 @@
+@startuml
+!include _style.iuml
+left to right direction
+actor "User\n(Patient / Clinician)" as U
+actor "Prediction Engine\n(XGBoost Model)" as M
+rectangle "Heart Failure Prediction System" {
+  usecase "Register Account" as UC1
+  usecase "Login" as UC2
+  usecase "Reset Password" as UC3
+  usecase "Submit Health Data\nfor Prediction" as UC4
+  usecase "Validate Clinical Input" as UC4a
+  usecase "View Prediction Result" as UC5
+  usecase "View Contributing\nFactors & Suggestions" as UC5a
+  usecase "Download PDF Report" as UC6
+  usecase "View Prediction History" as UC7
+  usecase "Logout" as UC8
+}
+U --> UC1
+U --> UC2
+U --> UC3
+U --> UC4
+U --> UC5
+U --> UC6
+U --> UC7
+U --> UC8
+UC4 ..> UC4a : <<include>>
+UC4 ..> UC5 : <<include>>
+UC5a .> UC5 : <<extend>>
+UC4 --> M
+@enduml

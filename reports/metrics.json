@@ -1,0 +1,137 @@
+{
+  "trained_at": "2026-10-04T12:15:00+00:00",
+  "models": {
+    "logistic_regression": {
+      "name": "Logistic Regression",
+      "train_cv_accuracy": 0.7987,
+      "train_cv_precision": 0.7201,
+      "test": {
+        "accuracy": 0.764,
+        "precision": 0.8052,
+        "recall": 0.5322,
+        "f1": 0.6408,
+        "roc_auc": 0.8053
+      },
+      "confusion_matrix": [
+        [
+          326,
+          30
+        ],
+        [
+          109,
+          124
+        ]
+      ]
+    },
+    "svm": {
+      "name": "Support Vector Machine (SVM)",
+      "train_cv_accuracy": 0.7854,
+      "train_cv_precision": 0.6732,
+      "test": {
+        "accuracy": 0.7267,
+        "precision": 0.7069,
+        "recall": 0.5279,
+        "f1": 0.6044,
+        "roc_auc": 0.7687
+      },
+      "confusion_matrix": [
+        [
+          305,
+          51
+        ],
+        [
+          110,
+          123
+        ]
+      ]
+    },
+    "decision_tree": {
+      "name": "Decision Tree",
+      "train_cv_accuracy": 0.7811,
+      "train_cv_precision": 0.6539,
+      "test": {
+        "accuracy": 0.7436,
+        "precision": 0.6971,
+        "recall": 0.6223,
+        "f1": 0.6576,
+        "roc_auc": 0.7338
+      },
+      "confusion_matrix": [
+        [
+          293,
+          63
+        ],
+        [
+          88,
+          145
+        ]
+      ]
+    },
+    "random_forest": {
+      "name": "Random Forest",
+      "train_cv_accuracy": 0.837,
+      "train_cv_precision": 0.7164,
+      "test": {
+        "accuracy": 0.7691,
+        "precision": 0.7235,
+        "recall": 0.6738,
+        "f1": 0.6978,
+        "roc_auc": 0.8481
+      },
+      "confusion_matrix": [
+        [
+          296,
+          60
+        ],
+        [
+          76,
+          157
+        ]
+      ]
+    },
+    "xgboost": {
+      "name": "XGBoost",
+      "train_cv_accuracy": 0.8264,
+      "train_cv_precision": 0.6904,
+      "test": {
+        "accuracy": 0.7504,
+        "precision": 0.6991,
+        "recall": 0.6481,
+        "f1": 0.6726,
+        "roc_auc": 0.8484
+      },
+      "confusion_matrix": [
+        [
+          291,
+          65
+        ],
+        [
+          82,
+          151
+        ]
+      ]
+    },
+    "gradient_boosting": {
+      "name": "Gradient Boosting",
+      "train_cv_accuracy": 0.8201,
+      "train_cv_precision": 0.7178,
+      "test": {
+        "accuracy": 0.691,
+        "precision": 0.6474,
+        "recall": 0.4807,
+        "f1": 0.5517,
+        "roc_auc": 0.7747
+      },
+      "confusion_matrix": [
+        [
+          295,
+          61
+        ],
+        [
+          121,
+          112
+        ]
+      ]
+    }
+  }
+}

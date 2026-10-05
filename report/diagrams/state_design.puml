@@ -1,0 +1,17 @@
+@startuml
+!include _style.iuml
+hide empty description
+[*] --> Received : POST /api/predict
+Received --> Unauthorized : missing / invalid token
+Received --> Authenticated : token verified
+Authenticated --> Rejected : schema validation fails
+Authenticated --> Validated : 12 fields within range
+Validated --> Scored : pipeline.predict_proba()
+Scored --> Explained : TreeSHAP contributions
+Explained --> Advised : build_suggestions()
+Advised --> Persisted : INSERT health_data,\npredictions
+Persisted --> Responded : 200 PredictionResult
+Unauthorized --> [*] : 401
+Rejected --> [*] : 422 field errors
+Responded --> [*]
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+!include _style.iuml
+package "Client (Web Browser)" {
+  component "React SPA" as SPA
+  component "Pages\n(Login, Signup, ResetPassword,\nPredictionForm, Result, History)" as Pages
+  component "AuthProvider" as Auth
+  component "ApiClient" as Api
+  component "PDFReportGenerator\n(jsPDF)" as Pdf
+  component "MedicalInfo\n(field metadata & validation)" as Meta
+}
+package "Server" {
+  component "FastAPI Application" as App
+  component "Auth Module\n(security.py)" as Sec
+  component "Prediction Module\n(predictor.py)" as Pred
+  component "Suggestion Module\n(suggestions.py)" as Sug
+  component "Persistence Module\n(db.py)" as Dbm
+  database "SQLite\nhfp.db" as DB
+  artifact "model.joblib\nmodel_meta.json" as Model
+}
+package "Offline Training" {
+  component "make_dataset.py" as Make
+  component "train.py" as Train
+}
+SPA --> Pages
+Pages --> Auth
+Pages --> Api
+Pages --> Pdf
+Pages --> Meta
+Api --> App : REST API (JSON over HTTP)
+App --> Sec
+App --> Pred
+App --> Sug
+App --> Dbm
+Dbm --> DB
+Pred --> Model
+Make --> Train : dataset CSV
+Train --> Model : exports
+@enduml

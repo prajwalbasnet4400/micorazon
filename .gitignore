@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/dist/
+
+# Runtime data
+backend/hfp.db
+*.db-journal
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
+
+# LibreOffice lock files
+.~lock.*#

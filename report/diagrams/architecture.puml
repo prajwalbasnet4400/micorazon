@@ -1,0 +1,26 @@
+@startuml
+!include _style.iuml
+left to right direction
+skinparam rectangleBorderColor #4F46E5
+rectangle "Offline ML Pipeline" as ML #F5F3FF {
+  rectangle "UCI Heart Failure\nClinical Records\n(299 patients)" as SRC
+  rectangle "Dataset Expansion\n(2000 records,\nsource_id groups)" as AUG
+  rectangle "Preprocessing\n(StandardScaler,\ngroup-aware split)" as PRE
+  rectangle "Model Training &\nComparison\n(6 classifiers)" as TRAIN
+  artifact "model.joblib\nmodel_meta.json" as ART
+}
+rectangle "Web Application" as WEB #EFF6FF {
+  rectangle "React Frontend\n(Login, Prediction Form,\nResult, History)" as FE
+  rectangle "FastAPI Backend\n(Auth, Prediction,\nSuggestions)" as BE
+  database "SQLite\n(users, health_data,\npredictions)" as DB
+  rectangle "PDF Report\n(jsPDF)" as PDF
+}
+SRC --> AUG
+AUG --> PRE
+PRE --> TRAIN
+TRAIN --> ART
+FE --> BE : REST / JSON
+BE --> ART : load XGBoost\npipeline
+BE --> DB
+FE --> PDF : Download report
+@enduml

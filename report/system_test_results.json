@@ -1,0 +1,86 @@
+[
+ [
+  "ST-01",
+  "Protected page without login",
+  "Pass",
+  "Redirected to /login"
+ ],
+ [
+  "ST-02",
+  "Register new account",
+  "Pass",
+  "Account created, prediction form shown"
+ ],
+ [
+  "ST-03",
+  "Logout",
+  "Pass",
+  "Returned to login page"
+ ],
+ [
+  "ST-04",
+  "Register with existing email",
+  "Pass",
+  "Error: \"An account with this email already exists\""
+ ],
+ [
+  "ST-05",
+  "Login with wrong password",
+  "Pass",
+  "Error: \"Invalid email or password\""
+ ],
+ [
+  "ST-06",
+  "Reset password",
+  "Pass",
+  "Success: \"Password updated successfully. You can now log in.\""
+ ],
+ [
+  "ST-07",
+  "Login with new password",
+  "Pass",
+  "Logged in, prediction form shown"
+ ],
+ [
+  "ST-08",
+  "Submit out-of-range values",
+  "Pass",
+  "Blocked; messages: Required; Must be between 5 and 90"
+ ],
+ [
+  "ST-09",
+  "Predict low-risk patient",
+  "Pass",
+  "✅ Status: HealthyLow risk; Risk Probability: 13.96% (40 ms)"
+ ],
+ [
+  "ST-10",
+  "Download PDF report",
+  "Pass",
+  "Downloaded HFP_Report_Dipesh_Kumar_Sharma_6.pdf (10158 bytes)"
+ ],
+ [
+  "ST-11",
+  "Predict high-risk patient",
+  "Pass",
+  "⚠️ Status: At RiskVery High risk; 7 suggestions shown"
+ ],
+ [
+  "ST-12",
+  "View prediction history",
+  "Pass",
+  "2 records listed; older result reopened"
+ ],
+ [
+  "ST-13",
+  "Session persists after reload",
+  "Pass",
+  "User still logged in after refresh"
+ ],
+ [
+  "ST-14",
+  "Mobile layout (390 px)",
+  "Pass",
+  "Sections stack vertically, no horizontal scroll"
+ ]
+]

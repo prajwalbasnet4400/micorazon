@@ -1,0 +1,36 @@
+@startuml
+!include _style.iuml
+autonumber
+actor User
+participant "PredictionForm" as PF
+participant "ApiClient" as API
+participant "APIRoutes\n(main.py)" as R
+participant "Security" as S
+participant "Predictor" as P
+participant "Suggestions" as SG
+database "SQLite" as DB
+participant "Result" as RS
+
+User -> PF : handleSubmit(e)
+PF -> PF : validate(formData)
+PF -> API : api('/predict', POST, body)
+API -> R : POST /api/predict\nAuthorization: Bearer <JWT>
+R -> S : decode_token(token)
+S --> R : user_id
+R -> DB : SELECT * FROM users WHERE id = ?
+R -> R : HealthData(**body) (Pydantic validation)
+R -> P : predict(inputs)
+P -> P : pipeline.predict_proba(frame)
+P -> P : _contributions(frame)\nbooster.predict(pred_contribs=True)
+P --> R : Prediction(probability, status,\nrisk_level, factors)
+R -> SG : build_suggestions(inputs, status)
+SG --> R : suggestions[]
+R -> DB : INSERT INTO health_data / predictions
+R --> API : 200 PredictionResult (JSON)
+API --> PF : result
+PF -> RS : navigate('/result/:id', state)
+RS --> User : status, probabilities,\nfactors, suggestions
+User -> RS : downloadReport()
+RS -> RS : import('pdfReport').generateReport(user, result)
+RS --> User : HFP_Report_<name>_<id>.pdf
+@enduml

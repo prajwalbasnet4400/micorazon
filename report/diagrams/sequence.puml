@@ -1,0 +1,39 @@
+@startuml
+!include _style.iuml
+autonumber
+actor User
+participant "Frontend\n(React)" as FE
+participant "Backend\n(FastAPI)" as BE
+database "Database\n(SQLite)" as DB
+participant "ML Model\n(XGBoost)" as ML
+
+== Login ==
+User -> FE : enter email & password
+FE -> BE : login request
+BE -> DB : find user by email
+DB --> BE : user record
+BE -> BE : verify password hash
+alt valid credentials
+  BE --> FE : access token + user
+  FE --> User : show prediction form
+else invalid credentials
+  BE --> FE : 401 error
+  FE --> User : show error message
+end
+
+== Prediction ==
+User -> FE : fill clinical data, click Predict
+FE -> FE : validate fields
+FE -> BE : prediction request (token, data)
+BE -> ML : predict probability & contributions
+ML --> BE : probability, SHAP values
+BE -> BE : risk level + suggestions
+BE -> DB : store health data & prediction
+BE --> FE : prediction result
+FE --> User : display result, factors, suggestions
+
+== Report ==
+User -> FE : click Download PDF Report
+FE -> FE : generate PDF
+FE --> User : PDF file download
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+!include _style.iuml
+node "User Device" as dev {
+  node "Web Browser\n(Chrome / Firefox / Edge)" as br {
+    artifact "React SPA\n(HTML, CSS, JS bundle)" as spa
+    artifact "localStorage\n(JWT token)" as ls
+  }
+}
+node "Application Server" as srv {
+  node "Python 3.12 Runtime" as py {
+    node "Uvicorn ASGI Server" as uv {
+      artifact "FastAPI app\n(backend/app)" as api
+      artifact "Static frontend build\n(frontend/dist)" as dist
+    }
+    artifact "model.joblib\n(XGBoost pipeline)" as mdl
+  }
+  database "SQLite\nhfp.db" as db
+}
+node "Developer Workstation" as ws {
+  artifact "ml/make_dataset.py\nml/train.py" as tr
+}
+br -- uv : HTTP(S) :8000\nREST / JSON
+api --> mdl : joblib.load
+api --> db : sqlite3
+tr ..> mdl : trains & exports
+@enduml

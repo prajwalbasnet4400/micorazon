@@ -1,0 +1,68 @@
+@startuml
+!include _style.iuml
+hide circle
+class User {
+  id : Integer
+  name : String
+  email : String
+  phone : String
+  address : String
+  passwordHash : String
+  --
+  register()
+  login()
+  resetPassword()
+}
+class HealthData {
+  id : Integer
+  age : Integer
+  sex : Binary
+  anaemia : Binary
+  creatininePhosphokinase : Integer
+  diabetes : Binary
+  ejectionFraction : Integer
+  highBloodPressure : Binary
+  platelets : Float
+  serumCreatinine : Float
+  serumSodium : Integer
+  smoking : Binary
+  time : Integer
+  createdAt : DateTime
+  --
+  validate()
+}
+class Prediction {
+  id : Integer
+  status : String
+  riskLevel : String
+  probabilityHealthy : Float
+  probabilityAtRisk : Float
+  topFactors : Factor[*]
+  suggestions : String[*]
+  createdAt : DateTime
+}
+class Factor {
+  feature : String
+  value : Float
+  contribution : Float
+  direction : String
+}
+class Report {
+  generatedOn : DateTime
+  --
+  generatePDF()
+}
+class PredictionModel {
+  features : String[12]
+  threshold : Float
+  --
+  predict(data : HealthData) : Prediction
+  explain(data : HealthData) : Factor[*]
+}
+User "1" -- "0..*" HealthData : submits >
+HealthData "1" -- "1" Prediction : produces >
+Prediction "1" *-- "1..5" Factor
+Prediction "1" -- "0..*" Report : rendered as >
+PredictionModel ..> HealthData : uses
+PredictionModel ..> Prediction : creates
+@enduml

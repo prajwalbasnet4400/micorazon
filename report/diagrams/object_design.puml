@@ -1,0 +1,37 @@
+@startuml
+!include _style.iuml
+object "app : FastAPI" as app {
+  title = "Heart Failure Prediction API"
+  routes = 8
+}
+object "predictor : Predictor" as pr {
+  threshold = 0.5
+  features = 12
+}
+object "pipeline : Pipeline" as pl {
+  steps = [scaler, model]
+}
+object "scaler : StandardScaler" as sc {
+  n_features_in_ = 12
+}
+object "model : XGBClassifier" as xgb {
+  n_estimators = 150
+  max_depth = 3
+  learning_rate = 0.03
+  scale_pos_weight = 2.28
+}
+object "meta : dict" as meta {
+  model_name = "XGBoost"
+  test_rows = 589
+  roc_auc = 0.848
+}
+object "conn : sqlite3.Connection" as db {
+  path = "backend/hfp.db"
+}
+app --> pr : get_predictor()
+app --> db : db.connect()
+pr --> pl
+pr --> meta
+pl *-- sc
+pl *-- xgb
+@enduml

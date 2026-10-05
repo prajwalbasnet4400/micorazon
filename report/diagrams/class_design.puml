@@ -1,0 +1,101 @@
+@startuml
+!include _style.iuml
+hide circle
+skinparam linetype ortho
+package "Frontend (React)" {
+  class AuthProvider <<context>> {
+    user : User
+    loading : Boolean
+    login(body) : Promise<User>
+    signup(body) : Promise<User>
+    logout() : void
+  }
+  class ApiClient <<module>> {
+    api(path, options) : Promise<JSON>
+    getToken() : String
+    setToken(token) : void
+  }
+  class PredictionForm <<page>> {
+    -formData : Object
+    -errors : Object
+    -loading : Boolean
+    -focusedField : String
+    +handleChange(e) : void
+    +handleSubmit(e) : Promise<void>
+    +renderField(key) : JSX
+  }
+  class Result <<page>> {
+    -result : PredictionResult
+    +downloadReport() : void
+  }
+  class History <<page>> {
+    -items : PredictionResult[*]
+  }
+  class MedicalInfo <<module>> {
+    FIELDS : Object
+    SECTIONS : Object[*]
+    MEDICAL_INFO_DESCRIPTIONS : Object
+    validate(formData) : Object
+    formatValue(key, value) : String
+  }
+  class PDFReportGenerator <<module>> {
+    generateReport(user, result) : void
+  }
+}
+package "Backend (FastAPI)" {
+  class APIRoutes <<FastAPI app>> {
+    +signup(SignupRequest) : AuthResponse
+    +login(LoginRequest) : AuthResponse
+    +reset_password(ResetPasswordRequest)
+    +me() : User
+    +predict(HealthData) : PredictionResult
+    +prediction_history(limit) : PredictionResult[*]
+    +prediction_detail(id) : PredictionResult
+    +model_info() : JSON
+  }
+  class Predictor {
+    pipeline : Pipeline
+    meta : dict
+    features : list[str]
+    threshold : float
+    +predict(inputs, top_k) : Prediction
+    -_contributions(frame) : ndarray
+  }
+  class Prediction <<dataclass>> {
+    probability_at_risk : float
+    status : str
+    risk_level : str
+    factors : list[dict]
+  }
+  class HealthData <<pydantic>> {
+    age, sex, anaemia, ...
+    (12 validated fields)
+  }
+  class Security <<module>> {
+    hash_password(pw) : str
+    verify_password(pw, stored) : bool
+    create_token(user_id) : str
+    decode_token(token) : int
+  }
+  class Suggestions <<module>> {
+    build_suggestions(inputs, status) : list[str]
+  }
+  class Database <<module>> {
+    init_db() : void
+    connect() : Connection
+  }
+}
+AuthProvider --> ApiClient
+PredictionForm --> ApiClient
+PredictionForm --> MedicalInfo
+Result --> PDFReportGenerator
+Result --> ApiClient
+History --> ApiClient
+ApiClient ..> APIRoutes : HTTP / JSON
+APIRoutes --> Predictor
+APIRoutes --> Security
+APIRoutes --> Suggestions
+APIRoutes --> Database
+APIRoutes ..> HealthData : validates
+Predictor ..> Prediction : creates
+@enduml

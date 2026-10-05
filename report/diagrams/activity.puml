@@ -1,0 +1,35 @@
+@startuml
+!include _style.iuml
+start
+:Open HFP web application;
+if (Logged in?) then (no)
+  if (Has account?) then (no)
+    :Register with name, email,\nphone, address, password;
+  else (yes)
+  endif
+  :Login with email and password;
+else (yes)
+endif
+repeat
+  :Enter clinical data\n(General, Medical, Habit info);
+  :Validate fields on client;
+repeat while (Input valid?) is (no) not (yes)
+:Send data to backend;
+:Validate data and\nauthenticate request;
+:Predict risk probability\nwith XGBoost pipeline;
+:Compute top contributing factors (SHAP);
+:Generate suggestions;
+:Save health data and prediction;
+:Display status, probabilities,\nfactors and suggestions;
+if (Download report?) then (yes)
+  :Generate and download PDF report;
+else (no)
+endif
+if (Predict again?) then (yes)
+  :Return to prediction form;
+  detach
+else (no)
+  :Logout;
+endif
+stop
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+!include _style.iuml
+object "anup : User" as u {
+  id = 2
+  name = "Anup Karki"
+  email = "anup.karki@example.com"
+  phone = "9861186365"
+  address = "Mid Baneshwor, Kathmandu"
+}
+object "hd7 : HealthData" as hd {
+  age = 60
+  sex = 1 (Male)
+  ejectionFraction = 38
+  serumCreatinine = 1.0
+  serumSodium = 135
+  platelets = 250000
+  creatininePhosphokinase = 250
+  anaemia = 0
+  diabetes = 0
+  highBloodPressure = 0
+  smoking = 0
+  time = 120
+}
+object "p7 : Prediction" as p {
+  status = "Healthy"
+  riskLevel = "Low"
+  probabilityHealthy = 0.8604
+  probabilityAtRisk = 0.1396
+}
+object "f1 : Factor" as f1 {
+  feature = "time"
+  contribution = -0.88
+  direction = "decreases"
+}
+object "f2 : Factor" as f2 {
+  feature = "serum_creatinine"
+  contribution = -0.54
+  direction = "decreases"
+}
+object "r7 : Report" as r {
+  file = "HFP_Report_Anup_Karki_7.pdf"
+}
+u -- hd : submits
+hd -- p : produces
+p *-- f1
+p *-- f2
+p -- r : rendered as
+@enduml

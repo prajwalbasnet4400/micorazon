@@ -1,0 +1,26 @@
+@startuml
+!include _style.iuml
+hide empty description
+[*] --> LoggedOut
+LoggedOut --> Registering : open Sign Up
+Registering --> LoggedIn : account created
+Registering --> Registering : invalid / duplicate email
+LoggedOut --> Authenticating : submit credentials
+Authenticating --> LoggedIn : valid credentials
+Authenticating --> LoggedOut : invalid credentials
+LoggedOut --> ResettingPassword : Forgot password
+ResettingPassword --> LoggedOut : password updated
+state LoggedIn {
+  [*] --> EnteringHealthData
+  EnteringHealthData --> Validating : Predict Risk
+  Validating --> EnteringHealthData : invalid input
+  Validating --> Predicting : input valid
+  Predicting --> ViewingResult : result returned
+  ViewingResult --> ReportDownloaded : Download PDF
+  ReportDownloaded --> ViewingResult
+  ViewingResult --> EnteringHealthData : Predict Again
+  EnteringHealthData --> ViewingHistory : History
+  ViewingHistory --> ViewingResult : View
+}
+LoggedIn --> LoggedOut : Logout / token expired
+@enduml
