@@ -92,7 +92,7 @@ def chapter1(R, cite):
 
     R.heading("1.5 Development Methodology", 2)
     P(
-        "The project followed the **Agile** development methodology. Machine learning projects suit an "
+        "The project followed the Agile development methodology. Machine learning projects suit an "
         "iterative approach because the dataset, model performance and user interface requirements change as "
         "the work progresses. Development was divided into short iterations (sprints). Each sprint was planned, "
         "designed, developed, tested and reviewed with the supervisor before the next one started, as shown in "
@@ -124,20 +124,19 @@ def chapter1(R, cite):
     R.heading("1.6 Report Organization", 2)
     P("This report is organized into five chapters:")
     R.bullets([
-        "**Chapter 1: Introduction** presents the problem, objectives, scope, limitations and the development "
+        "Chapter 1: Introduction presents the problem, objectives, scope, limitations and the development "
         "methodology of the project.",
-        "**Chapter 2: Background Study and Literature Review** explains the clinical and machine learning "
+        "Chapter 2: Background Study and Literature Review explains the clinical and machine learning "
         "concepts used in the project and reviews related research.",
-        "**Chapter 3: System Analysis and Design** describes the requirements, feasibility analysis, object, "
+        "Chapter 3: System Analysis and Design describes the requirements, feasibility analysis, object, "
         "dynamic and process models, the refined design, component and deployment diagrams, and the algorithms "
         "used.",
-        "**Chapter 4: Implementation and Testing** describes the tools and the implementation of each module, "
+        "Chapter 4: Implementation and Testing describes the tools and the implementation of each module, "
         "the unit and system test cases, and the analysis of the results.",
-        "**Chapter 5: Conclusion and Future Recommendations** summarizes the work and suggests future "
+        "Chapter 5: Conclusion and Future Recommendations summarizes the work and suggests future "
         "improvements.",
     ])
-    P("The report ends with the references, bibliography and appendices containing screenshots of the system "
-      "and selected source code.")
+    P("The report ends with the references and the appendices containing screenshots of the system.")
 
 
 def chapter2(R, cite):
@@ -175,10 +174,10 @@ def chapter2(R, cite):
         widths=(1.55, 2.35, 1.1, 1.3), font_size=10, label="attributes",
     )
     P(
-        "Several attributes have direct clinical meaning for heart failure. A low **ejection fraction** "
-        "(below 40%) indicates reduced pumping function of the left ventricle. An elevated **serum creatinine** "
-        "reflects impaired kidney function, which commonly accompanies and worsens heart failure. Low **serum "
-        "sodium** (hyponatraemia) is associated with fluid overload and poor outcomes. These clinical reference "
+        "Several attributes have direct clinical meaning for heart failure. A low ejection fraction "
+        "(below 40%) indicates reduced pumping function of the left ventricle. An elevated serum creatinine "
+        "reflects impaired kidney function, which commonly accompanies and worsens heart failure. Low serum "
+        "sodium (hyponatraemia) is associated with fluid overload and poor outcomes. These clinical reference "
         "ranges are also used by the rule-based suggestion module described in Section 3.3.7."
     )
     P(
@@ -195,16 +194,16 @@ def chapter2(R, cite):
 
     R.heading("2.1.2 Heart Failure Prediction as a Classification Problem", 3)
     P(
-        "Predicting whether a patient will experience a death event is a **supervised binary classification** "
+        "Predicting whether a patient will experience a death event is a supervised binary classification "
         "problem: each patient is described by a feature vector of twelve attributes and labelled 1 (death "
         "event) or 0 (survived). A classifier learns a function that maps the feature vector to the probability "
         "of class 1. In the HFP system, this probability is shown to the user as the *risk probability*, and a "
         "threshold of 0.5 converts it into the status *At Risk* or *Healthy*."
     )
     P(
-        "Because the source dataset is small, two practical issues shape the design. First, **class "
-        "imbalance** biases models towards the majority class. The project handles this by weighting the "
-        "positive class during training and by selecting models on F1-score. Second, **evaluation leakage** "
+        "Because the source dataset is small, two practical issues shape the design. First, class "
+        "imbalance biases models towards the majority class. The project handles this by weighting the "
+        "positive class during training and by selecting models on F1-score. Second, evaluation leakage "
         "can make results look better than they are. The expanded dataset contains several synthetic copies of "
         "each real patient, so a random split would place copies of the same patient in both the training and "
         "test sets. The project prevents this by splitting the data by patient group (Section 3.3.1)."
@@ -212,9 +211,9 @@ def chapter2(R, cite):
 
     R.heading("2.1.3 Ensemble Learning and Gradient Boosting", 3)
     P(
-        "Tree-based ensemble methods combine many decision trees into a stronger model. **Bagging** methods "
+        "Tree-based ensemble methods combine many decision trees into a stronger model. Bagging methods "
         "such as Random Forest train trees independently on bootstrap samples and average their predictions, "
-        "which reduces variance [@breiman]. **Boosting** methods build trees sequentially, each one correcting "
+        "which reduces variance [@breiman]. Boosting methods build trees sequentially, each one correcting "
         "the errors of the previous ones. Gradient boosting formalizes this as gradient descent on a loss "
         "function [@friedman], and XGBoost adds regularization, efficient split finding and parallel "
         "computation to this framework [@chen]. These properties make boosted trees accurate on small, tabular "
@@ -223,7 +222,7 @@ def chapter2(R, cite):
 
     R.heading("2.1.4 Explainable Machine Learning", 3)
     P(
-        "A risk score is more useful in a clinical setting when it comes with an explanation. **SHAP** "
+        "A risk score is more useful in a clinical setting when it comes with an explanation. SHAP "
         "(SHapley Additive exPlanations) attributes a model's output to its input features using Shapley "
         "values from cooperative game theory, so that the contributions of all features add up to the "
         "prediction [@lundberg2017]. For tree ensembles, TreeSHAP computes these values exactly and efficiently "
@@ -296,7 +295,7 @@ def chapter2(R, cite):
         widths=(0.5, 1.9, 1.8, 2.1), font_size=10, label="lit",
     )
     P(
-        "**Review of the existing system.** In current practice, heart failure risk is assessed manually. "
+        "In current practice, heart failure risk is assessed manually. "
         "Clinicians interpret isolated test results using general clinical guidelines, and patient records are "
         "often incomplete or spread across paper files and local hospital systems. Assessments are subjective, "
         "usually happen after symptoms worsen, and do not give patients an explanation of their risk. The HFP "

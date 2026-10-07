@@ -7,7 +7,7 @@ from docx.shared import Inches, Pt
 from .common import ADDRESS, COLLEGE, META, ORIG, SUBMIT_DATE, SUPERVISOR, TEAM, UNIVERSITY, pct
 
 
-def _title_block(R, with_supervisor):
+def _title_page(R):
     p = R.doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.add_run().add_picture(str(ORIG / "college_logo.png"), width=Inches(1.15))
@@ -25,10 +25,9 @@ def _title_block(R, with_supervisor):
     R.para("Submitted by:", align="center", bold=True, space_after=2)
     for name, roll in TEAM:
         R.para(f"{name} ({roll})", align="center", space_after=0)
-    if with_supervisor:
-        R.para("", space_after=6)
-        R.para("Under the Supervision of:", align="center", bold=True, space_after=2)
-        R.para(SUPERVISOR, align="center", space_after=0)
+    R.para("", space_after=6)
+    R.para("Under the Supervision of:", align="center", bold=True, space_after=2)
+    R.para(SUPERVISOR, align="center", space_after=0)
     R.para("", space_after=10)
     R.para("Submitted to:", align="center", bold=True, space_after=2)
     R.para("Department of Science and Technology", align="center", space_after=0)
@@ -61,18 +60,16 @@ def front_matter(R, cite):
     team_names = ", ".join(n for n, _ in TEAM[:-1]) + f" and {TEAM[-1][0]}"
     team_rolls = ", ".join(f"{n} ({r})" for n, r in TEAM[:-1]) + f" and {TEAM[-1][0]} ({TEAM[-1][1]})"
 
-    # Cover and title page (unnumbered).
+    # Title page (unnumbered).
     R.configure_first_section(None)
-    _title_block(R, with_supervisor=False)
-    R.page_break()
-    _title_block(R, with_supervisor=True)
+    _title_page(R)
 
     # Certificate pages onward: roman numerals starting at i.
     R.new_section("lowerRoman", 1)
     R.heading("SUPERVISOR RECOMMENDATION", 1)
     R.para(
         f"I hereby recommend that this project report prepared under my supervision by {team_rolls}, "
-        "entitled **“Heart Failure Prediction”**, in partial fulfillment of the requirements for the degree "
+        "entitled “Heart Failure Prediction”, in partial fulfillment of the requirements for the degree "
         f"of Bachelor in Information Technology (BIT) of {UNIVERSITY}, be processed for evaluation."
     )
     R.para(
@@ -88,10 +85,10 @@ def front_matter(R, cite):
     R.para(COLLEGE, align="left", space_after=0)
     R.para("Date: ……………………", align="left")
 
-    R.heading("CERTIFICATE OF APPROVAL", 1, page_break=True)
+    R.heading("LETTER OF APPROVAL", 1, page_break=True)
     R.para(
         f"This is to certify that this project report prepared by {team_rolls}, entitled "
-        "**“Heart Failure Prediction”**, in partial fulfillment of the requirements for the degree of "
+        "“Heart Failure Prediction”, in partial fulfillment of the requirements for the degree of "
         "Bachelor in Information Technology (BIT), has been evaluated. In our opinion, it is satisfactory "
         "in scope and quality as a project for the required degree."
     )
@@ -105,7 +102,7 @@ def front_matter(R, cite):
 
     R.heading("ACKNOWLEDGEMENT", 1, page_break=True)
     R.para(
-        f"We would like to express our sincere gratitude to our supervisor, **{SUPERVISOR}**, for the valuable "
+        f"We would like to express our sincere gratitude to our supervisor, {SUPERVISOR}, for the valuable "
         "guidance, constructive feedback and continuous support throughout this project. The suggestions received during "
         "the proposal, mid-term and final phases helped us shape both the machine learning model and the web "
         "application."
@@ -158,7 +155,7 @@ def front_matter(R, cite):
         "**Keywords:** heart failure, machine learning, XGBoost, explainable AI, SHAP, clinical decision support"
     )
 
-    R.plain_title("TABLE OF CONTENTS", page_break=True)
+    R.heading("TABLE OF CONTENTS", 1, page_break=True)
     R.toc()
 
     R.heading("LIST OF ABBREVIATIONS", 1, page_break=True)
@@ -180,7 +177,14 @@ def front_matter(R, cite):
         ("UCI", "University of California, Irvine"), ("UI", "User Interface"),
         ("UML", "Unified Modeling Language"), ("XGBoost", "Extreme Gradient Boosting"),
     ]
-    R.table("", ["Abbreviation", "Full Form"], abbreviations, widths=(1.6, 4.4), caption=False)
+    t = R.doc.add_table(rows=0, cols=2)
+    for short, full in abbreviations:
+        cells = t.add_row().cells
+        R._cell(cells[0], short, size=12)
+        R._cell(cells[1], full, size=12)
+        for c in cells:
+            c.paragraphs[0].paragraph_format.space_after = Pt(4)
+    R._set_widths(t, [1.6, 4.4])
 
     R.heading("LIST OF FIGURES", 1, page_break=True)
     R.list_of("Figure")

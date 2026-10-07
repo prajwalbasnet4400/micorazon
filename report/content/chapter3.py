@@ -103,7 +103,7 @@ def chapter3(R, cite):
         "(Section 2.2) and on the needs of the intended users: patients, clinicians, data analysts and researchers."
     )
     R.heading("3.1.1 Requirement Analysis", 3)
-    R.heading("i. Functional Requirements", 4)
+    R.heading("3.1.1.1 Functional Requirements", 4)
     P(
         "The functional requirements of the system are captured in the use case diagram in Figure {fig:usecase}. "
         "The primary actor is the user (a patient or clinician). The secondary actor is the prediction engine, "
@@ -115,7 +115,7 @@ def chapter3(R, cite):
     P("The use cases are described in Tables {tab:uc1} to {tab:uc8}.")
     use_cases(R, cite)
 
-    R.heading("ii. Non-Functional Requirements", 4)
+    R.heading("3.1.1.2 Non-Functional Requirements", 4)
     R.bullets([
         "**Accuracy:** the model must discriminate well between high- and low-risk patients, with a balance "
         "between precision and recall. It is evaluated on patients not seen during training "
@@ -136,7 +136,7 @@ def chapter3(R, cite):
 
     R.heading("3.1.2 Feasibility Analysis", 3)
     P("A feasibility study was carried out to confirm that the proposed system was practical to build and use.")
-    R.heading("i. Technical Feasibility", 4)
+    R.heading("3.1.2.1 Technical Feasibility", 4)
     P(
         "The system is built entirely with mature, well-documented open-source technologies: Python with "
         "scikit-learn and XGBoost for machine learning, FastAPI for the backend, React for the frontend and "
@@ -146,7 +146,7 @@ def chapter3(R, cite):
         "the available dataset, which was addressed with careful data expansion and leakage-free evaluation. "
         "The project is therefore technically feasible."
     )
-    R.heading("ii. Operational Feasibility", 4)
+    R.heading("3.1.2.2 Operational Feasibility", 4)
     P(
         "The system requires only a web browser. Users enter values they already find in routine clinical "
         "reports, and the result appears within a second, with an explanation and a printable report. This fits "
@@ -154,7 +154,7 @@ def chapter3(R, cite):
         "contextual help, so minimal training is needed. The system is therefore operationally feasible as a "
         "decision support tool, provided that users understand that it does not replace clinical diagnosis."
     )
-    R.heading("iii. Economic Feasibility", 4)
+    R.heading("3.1.2.3 Economic Feasibility", 4)
     P(
         "All software used in development and deployment is free and open source, so there are no licensing "
         "costs. Development was done on the team's own computers, and the system can run on a single low-cost "
@@ -162,7 +162,7 @@ def chapter3(R, cite):
         "this low cost, earlier identification of high-risk patients can reduce emergency admissions and support "
         "better use of limited clinical resources. The project is therefore economically feasible."
     )
-    R.heading("iv. Schedule Feasibility", 4)
+    R.heading("3.1.2.4 Schedule Feasibility", 4)
     P(
         "The project was planned over six months, from January to June 2025, as shown in the Gantt chart in "
         "Figure {fig:gantt}. Overlapping phases and the iterative Agile approach allowed testing to begin while "
@@ -174,15 +174,15 @@ def chapter3(R, cite):
     R.heading("3.1.3 Object Modelling using Class and Object Diagrams", 3)
     P(
         "The analysis class diagram in Figure {fig:classa} shows the main domain concepts and their "
-        "relationships. A **User** submits any number of **HealthData** records. Each HealthData record produces "
-        "exactly one **Prediction**, which is composed of one to five contributing **Factor** objects and can be "
-        "rendered as a **Report**. The **PredictionModel** uses HealthData to create Predictions and their "
+        "relationships. A User submits any number of HealthData records. Each HealthData record produces "
+        "exactly one Prediction, which is composed of one to five contributing Factor objects and can be "
+        "rendered as a Report. The PredictionModel uses HealthData to create Predictions and their "
         "explanations."
     )
     R.figure(GEN / "class_analysis.png", "Class Diagram of the HFP System", width=fit(GEN / "class_analysis.png", 4.0, 7.4), label="classa")
     P(
         "The object diagram in Figure {fig:objecta} shows a snapshot of these classes at run time, using the "
-        "example patient whose prediction is shown in Appendix A: a 60-year-old male patient with an ejection "
+        "example patient whose prediction is shown in the Appendices: a 60-year-old male patient with an ejection "
         "fraction of 38% received a *Healthy* prediction with a risk probability of 13.96%."
     )
     R.figure(GEN / "object.png", "Object Diagram of the HFP System", width=fit(GEN / "object.png", 5.0, 6.0), label="objecta")
@@ -219,8 +219,9 @@ def chapter3(R, cite):
     R.figure(GEN / "architecture.png", "System Architecture (Block Diagram) of the HFP System", width=fit(GEN / "architecture.png", 6.0), label="arch")
 
     R.heading("3.2.1 Refinement of Class, Object, State, Sequence and Activity Diagrams", 3)
+    R.heading("3.2.1.1 Refinement of Class Diagram", 4)
     P(
-        "**Refined class diagram.** Figure {fig:classd} maps the domain classes to the implemented modules. In the "
+        "Figure {fig:classd} maps the domain classes to the implemented modules. In the "
         "frontend, the *PredictionForm*, *Result* and *History* pages use the *ApiClient* module to call the backend, "
         "*AuthProvider* holds the logged-in user, *MedicalInfo* defines the field metadata and validation rules, and "
         "*PDFReportGenerator* builds the report. In the backend, *APIRoutes* exposes the REST endpoints and "
@@ -229,25 +230,29 @@ def chapter3(R, cite):
         "validates the twelve clinical inputs."
     )
     R.figure(GEN / "class_design.png", "Refined Class Diagram of the HFP System", width=fit(GEN / "class_design.png", 6.0), label="classd")
+    R.heading("3.2.1.2 Refinement of Object Diagram", 4)
     P(
-        "**Refined object diagram.** Figure {fig:objectd} shows the objects that exist in the running backend. The "
+        "Figure {fig:objectd} shows the objects that exist in the running backend. The "
         "FastAPI application holds a single *Predictor*, loaded once at start-up. The Predictor wraps a "
         "scikit-learn *Pipeline* made of a *StandardScaler* and the tuned *XGBClassifier*."
     )
     R.figure(GEN / "object_design.png", "Refined Object Diagram of the Backend at Run Time", width=fit(GEN / "object_design.png", 4.6, 5.0), label="objectd")
+    R.heading("3.2.1.3 Refinement of State Diagram", 4)
     P(
-        "**Refined state diagram.** Figure {fig:stated} refines the prediction step into the states of a single "
+        "Figure {fig:stated} refines the prediction step into the states of a single "
         "*POST /api/predict* request on the server. Each state matches a step of the implementation, and the two "
         "failure paths return HTTP 401 (unauthenticated) or 422 (invalid input)."
     )
     R.figure(GEN / "state_design.png", "Refined State Diagram of a Prediction Request", width=fit(GEN / "state_design.png", 3.6, 7.2), label="stated")
+    R.heading("3.2.1.4 Refinement of Sequence Diagram", 4)
     P(
-        "**Refined sequence diagram.** Figure {fig:seqd} shows the prediction flow with the actual functions and "
+        "Figure {fig:seqd} shows the prediction flow with the actual functions and "
         "endpoints called at each step, from *handleSubmit* in the form to the downloaded PDF file."
     )
     R.figure(GEN / "sequence_design.png", "Refined Sequence Diagram of the Prediction Flow", width=fit(GEN / "sequence_design.png", 6.0), label="seqd")
+    R.heading("3.2.1.5 Refinement of Activity Diagram", 4)
     P(
-        "**Refined activity diagram.** Figure {fig:activityd} details the offline model training process "
+        "Figure {fig:activityd} details the offline model training process "
         "implemented in *make_dataset.py* and *train.py*. The six models are trained in parallel branches, "
         "evaluated in the same way and compared before the XGBoost pipeline is exported."
     )
@@ -276,7 +281,7 @@ def chapter3(R, cite):
     R.heading("3.3 Algorithm Details", 2)
     R.heading("3.3.1 Data Preparation and Preprocessing", 3)
     P(
-        "**Dataset expansion.** The 299 real patients were expanded to 2000 records by generating 1701 synthetic "
+        "The 299 real patients were expanded to 2000 records by generating 1701 synthetic "
         "patients. Each synthetic patient copies a randomly chosen real patient and then: (i) adds Gaussian noise "
         "of 15% of the feature's standard deviation to each continuous feature, applied in log space for the "
         "skewed laboratory values (CPK, serum creatinine and platelets); (ii) clips each value to its "
@@ -285,16 +290,16 @@ def chapter3(R, cite):
         "not unrealistically easy to separate. Every record keeps a *source_id* identifying its real patient."
     )
     P(
-        "**Group-aware split.** The data was split 70/30 into training and test sets with *GroupShuffleSplit* on "
+        "The data was split 70/30 into training and test sets with *GroupShuffleSplit* on "
         "*source_id*, so all synthetic copies of a patient fall on the same side of the split. The training set "
         f"has {META['train_rows']} records (209 real patients) and the test set has {META['test_rows']} records "
         "(90 real patients). Cross-validation on the training set uses *StratifiedGroupKFold* with five folds "
         "for the same reason."
     )
-    P("**Standardization.** Each feature is standardized using the mean and standard deviation of the training set:")
+    P("Each feature is standardized using the mean and standard deviation of the training set:")
     R.equation(EQ / "standardize.png")
     P(
-        "**Class imbalance.** The positive class is weighted in Random Forest (balanced class weights) and in "
+        "The positive class is weighted in Random Forest (balanced class weights) and in "
         "XGBoost, where the weight of positive samples is set from the training set:"
     )
     R.equation(EQ / "spw.png", height=Inches(0.48))
@@ -365,7 +370,7 @@ def chapter3(R, cite):
     P("The prediction is updated with a learning rate η, and the final score is converted to a probability with the sigmoid function:")
     R.equation(EQ / "xgb_update.png", height=Inches(0.34))
     P(
-        "**Hyperparameter tuning.** XGBoost was tuned with a grid search over 24 combinations, scored by F1-score "
+        "XGBoost was tuned with a grid search over 24 combinations, scored by F1-score "
         "with group-aware five-fold cross-validation on the training set only (Table {tab:grid}). Subsampling of "
         "rows and columns (0.8) and L2 regularization (λ = 1) were fixed."
     )

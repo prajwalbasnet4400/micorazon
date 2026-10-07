@@ -4,7 +4,7 @@ import re
 
 from docx.shared import Inches
 
-from .common import BIBLIOGRAPHY, GEN, LATENCY, META, METRICS, ML_FIG, REFERENCES, ROOT, SCREENS, SYSTEM_TESTS, fit, pct
+from .common import GEN, LATENCY, META, METRICS, ML_FIG, REFERENCES, ROOT, SCREENS, SYSTEM_TESTS, fit, pct
 
 
 def _snippet(path, start_marker, end_marker=None):
@@ -25,7 +25,7 @@ def chapter4(R, cite):
     P(
         "The system was implemented in three parts: an offline machine learning pipeline (*ml/*), a REST API "
         "backend (*backend/*) and a web frontend (*frontend/*). The source code is managed with Git. Screenshots "
-        "of the implemented system are given in Appendix A, and selected source code in Appendix B."
+        "of the implemented system are given in the Appendices."
     )
     R.heading("4.1.1 Tools Used", 3)
     R.table(
@@ -50,7 +50,7 @@ def chapter4(R, cite):
     )
     R.heading("4.1.2 Implementation Details of Modules", 3)
 
-    R.heading("a. Dataset Preparation Module (ml/make_dataset.py)", 4)
+    R.heading("4.1.2.1 Dataset Preparation Module (ml/make_dataset.py)", 4)
     P(
         "The *expand()* function implements the data expansion described in Section 3.3.1. It assigns a "
         "*source_id* to the 299 real patients, samples 1701 base rows with replacement and perturbs them. The "
@@ -59,7 +59,7 @@ def chapter4(R, cite):
     )
     R.code(_snippet("ml/make_dataset.py", "    for col in CONTINUOUS_FEATURES:", "    out = pd.concat"))
 
-    R.heading("b. Model Training Module (ml/train.py)", 4)
+    R.heading("4.1.2.2 Model Training Module (ml/train.py)", 4)
     P(
         "*build_models()* creates the six classifiers, and each one is wrapped in a scikit-learn *Pipeline* "
         "with a *StandardScaler*. Scaling is therefore learned only from the training data and applied "
@@ -71,7 +71,7 @@ def chapter4(R, cite):
     )
     R.code(_snippet("ml/train.py", "        pipeline = Pipeline([(\"scaler\"", "        pipeline.fit(X_train, y_train)"))
 
-    R.heading("c. Prediction Module (backend/app/predictor.py)", 4)
+    R.heading("4.1.2.3 Prediction Module (backend/app/predictor.py)", 4)
     P(
         "The *Predictor* class loads the pipeline and its metadata once, when the server starts. *predict()* "
         "arranges the inputs in the trained feature order, obtains the risk probability, determines the status "
@@ -80,14 +80,14 @@ def chapter4(R, cite):
     )
     R.code(_snippet("backend/app/predictor.py", "        scaler = self.pipeline.named_steps", "        if hasattr(model, \"coef_\"):"))
 
-    R.heading("d. Suggestion Module (backend/app/suggestions.py)", 4)
+    R.heading("4.1.2.4 Suggestion Module (backend/app/suggestions.py)", 4)
     P(
         "*build_suggestions()* applies the rules of Table {tab:rules} to the inputs and the predicted status, and "
         "returns an ordered list of plain-language suggestions. Keeping the rules in a separate module allows "
         "clinicians to review and change them without touching the model."
     )
 
-    R.heading("e. Authentication Module (backend/app/security.py)", 4)
+    R.heading("4.1.2.5 Authentication Module (backend/app/security.py)", 4)
     P(
         "Passwords are hashed with PBKDF2-HMAC-SHA256, using a random 16-byte salt and 310,000 iterations. The "
         "hash is stored as *pbkdf2_sha256$iterations$salt$digest*, and *verify_password()* compares digests in "
@@ -97,7 +97,7 @@ def chapter4(R, cite):
     )
     R.code(_snippet("backend/app/security.py", "def hash_password", "def create_token"))
 
-    R.heading("f. Persistence Module (backend/app/db.py)", 4)
+    R.heading("4.1.2.6 Persistence Module (backend/app/db.py)", 4)
     P(
         "The database schema follows the class diagram. Each prediction request stores one *health_data* row "
         "(the validated inputs as JSON) and one *predictions* row (status, probabilities, factors and "
@@ -123,7 +123,7 @@ def chapter4(R, cite):
         widths=(1.1, 2.3, 1.1, 1.8), font_size=10, label="schema",
     )
 
-    R.heading("g. API Module (backend/app/main.py)", 4)
+    R.heading("4.1.2.7 API Module (backend/app/main.py)", 4)
     P(
         "The FastAPI application defines the REST endpoints in Table {tab:api}. Request and response bodies are "
         "Pydantic models. Out-of-range values (for example, an ejection fraction outside 5–90%) are rejected "
@@ -146,7 +146,7 @@ def chapter4(R, cite):
         widths=(0.8, 2.1, 0.6, 2.7), font_size=10, label="api",
     )
 
-    R.heading("h. Frontend Modules (frontend/src)", 4)
+    R.heading("4.1.2.8 Frontend Modules (frontend/src)", 4)
     P(
         "*PredictionForm* keeps the form state (*formData*, *errors*, *loading*, *focusedField*), renders the three "
         "input sections from the *SECTIONS* metadata, shows the description of the focused field, and validates "
@@ -302,7 +302,7 @@ def chapter4(R, cite):
         f"{LATENCY['median_ms']} ms, 95th percentile {LATENCY['p95_ms']} ms), including authentication, model "
         f"inference, SHAP computation and two database writes. A login took about {LATENCY['login_ms']:.0f} ms, "
         "most of which is the deliberately slow PBKDF2 password hashing. Both are far below the one-second target. "
-        "The screens of the final system are shown in Appendix A."
+        "The screens of the final system are shown in the Appendices."
     )
 
 
@@ -351,14 +351,7 @@ def back_matter(R, cite):
         p.paragraph_format.left_indent = Inches(0.45)
         p.paragraph_format.first_line_indent = Inches(-0.45)
 
-    R.heading("BIBLIOGRAPHY", 1, page_break=True)
-    for item in BIBLIOGRAPHY:
-        p = R.para(item, align="left", space_after=6)
-        p.paragraph_format.left_indent = Inches(0.3)
-        p.paragraph_format.first_line_indent = Inches(-0.3)
-
     R.heading("APPENDICES", 1, page_break=True)
-    R.heading("Appendix A: Screenshots", 2)
     shots = [
         ("01_login.png", "Login Page"),
         ("02_signup.png", "Sign Up Page"),
@@ -374,16 +367,3 @@ def back_matter(R, cite):
     for file, title in shots:
         path = SCREENS / file
         R.figure(path, title, width=fit(path, 6.0, 7.4 if "pdf" not in file else 7.0))
-
-    R.heading("Appendix B: Source Code", 2, page_break=True)
-    P = lambda t, **k: R.para(cite(t), **k)  # noqa: E731
-    P("Selected source files of the system are listed below. The complete source code is available in the project repository.")
-    for path, title, start, end in [
-        ("backend/app/predictor.py", "B.1 Prediction Module (backend/app/predictor.py)", "class Predictor:", "@lru_cache"),
-        ("backend/app/main.py", "B.2 Prediction Endpoint (backend/app/main.py)", '@app.post("/api/predict"', '@app.get("/api/predictions"'),
-        ("backend/app/suggestions.py", "B.3 Suggestion Module (backend/app/suggestions.py)", "def build_suggestions", None),
-        ("ml/train.py", "B.4 Model Definitions (ml/train.py)", "def build_models", "MODEL_NAMES = {"),
-        ("frontend/src/pages/PredictionForm.jsx", "B.5 Prediction Form Submission (frontend/src/pages/PredictionForm.jsx)", "  const handleSubmit", "  const renderField"),
-    ]:
-        R.heading(title, 3)
-        R.code(_snippet(path, start, end))

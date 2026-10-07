@@ -49,15 +49,6 @@ REFERENCES = {
     "pedregosa": 'F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M. Perrot, and E. Duchesnay, "Scikit-learn: Machine learning in Python," *Journal of Machine Learning Research*, vol. 12, pp. 2825–2830, 2011.',
 }
 
-BIBLIOGRAPHY = [
-    'FastAPI Documentation. [Online]. Available: https://fastapi.tiangolo.com',
-    'React Documentation. [Online]. Available: https://react.dev',
-    'XGBoost Documentation. [Online]. Available: https://xgboost.readthedocs.io',
-    'Scikit-learn User Guide. [Online]. Available: https://scikit-learn.org/stable/user_guide.html',
-    'PlantUML Language Reference Guide. [Online]. Available: https://plantuml.com',
-    'jsPDF Documentation. [Online]. Available: https://github.com/parallax/jsPDF',
-]
-
 
 class Citations:
     """Assigns IEEE numbers in order of first citation. Use [@key] or [@a,b] in text."""

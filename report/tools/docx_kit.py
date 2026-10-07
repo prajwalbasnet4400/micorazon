@@ -149,10 +149,9 @@ class Report:
             _set_font(st, 12)
             st.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
             st.paragraph_format.left_indent = Inches(indent)
-            st.paragraph_format.space_after = Pt(2)
+            st.paragraph_format.space_after = Pt(0)
             st.paragraph_format.line_spacing_rule = WD_LINE_SPACING.ONE_POINT_FIVE
             st.paragraph_format.tab_stops.add_tab_stop(TEXT_WIDTH, WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
-        styles["toc 1"].font.bold = True
 
         bullet = styles["List Bullet"]
         _set_font(bullet, 12)
